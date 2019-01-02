@@ -1,0 +1,781 @@
+ANGULAR 7.0.4 
+-----------
+
+npm install -g @angular/cli
+ng new angular7app
+ng add @angular/material - to add the material themes for new projects in angular
+ng serve  - to start the project
+
+ANGULAR 7 New Features
+
+>CLI Prompts
+>Materials
+>Drag and Drop
+>virtual Scroll
+>Improved Accessibility of Selects
+>Dependency & Documentation Updates
+	TypeScript3.1
+	RxJS6.3
+	Node 10
+>Application Performance
+>Partner Launches
+	Angular Console
+	NativeScript- It's now possible to hav a Single Project that builds for web and installed mobilwith NativeScript
+	StackBlitz- online project creation tools
+	
+--------------
+Modules:
+	>This causes the CLI to create a folder called customer-dashboard with a file 
+	inside called customer-dashboard.module.ts with the following contents
+		ng generate module CustomerDashboard
+	>This generates a folder for the new component within the customer-dashboard 
+	folder and updates the feature module with the CustomerDashboardComponent
+		ng generate component customer-dashboard/CustomerDashboard
+
+Decorators:
+	Some common Decorators
+		@NgModule()
+		@Component()
+		@Injectable()
+		@Input(), @Output() - sends and recevies data from the DOM
+		There are many built-in decorators available
+	Types of Decorators
+		Class decorators
+		Property decorators
+		Method decorators
+		paramter decorators
+		
+Components:
+    ng g c employee
+	Decorators @Component()
+	Component is the basix building blockof Angular, which means that an Angular applications is a collections of Components.
+	and one componentis responsible for handling one view or part of the view.
+	Preservewhitespace:true/false
+
+Directives:
+	Directives are elements which change the appearance or behavior of the DOM element.
+	There are 3 types of the Directives mainly.
+		1. Components - Directives with own Template
+		2. Structural - change DOM by adding Removing elements.(*NgIf, *ngFor, *ngSwitch)
+		3. Attributes - change Appearanceor behavior of the DOM.(ngStyle, ngClass)
+	Component is also a type of directive with template, styles and logic part which is most famous type of directive.
+	
+	ngIf Directives - it removes the Div from the DOM, else, then
+		TS-File
+			isvalid:boolean=true;
+			  changevalue(valid){
+				this.isvalid = valid;
+			  }
+		HTML-File
+		<input type="radio" name="radio1" (click)="changevalue(true)">True
+		<input type="radio" name="radio1" (click)="changevalue(false)">False
+
+		<div *ngIf="isvalid ; then thenblock; else elseblock">This is valid</div>
+			<ng-template #thenblock>
+				<div>This is valid using then block</div>
+			</ng-template>
+			<ng-template #elseblock>
+				<div>This is not valid using else block</div>
+			</ng-template>
+			<!-- <div *ngIf="!isvalid">This is not valid</div> -->
+		</div>
+	
+	ngSwitch Directives
+		ngSwitch, ngSwitchCase, ngSwitchDefault
+		TS-File
+			public choose=' ';
+			  setvalue(drop:any){
+				this.choose=drop.target.value;
+			  }
+		HTML-File
+			<h2>Usinf ngSwitch</h2>
+			  <select (change)="setvalue($event)">
+				<option value="">--select--</option>
+				<option value="one">one</option>
+				<option value="two">Two</option>
+				<option value="three">Three</option>
+				<option value="another">Another</option>
+			  </select>
+			  <div [ngSwitch]="choose">
+				<h3 *ngSwitchCase="'one'">First</h3>
+				<h3 *ngSwitchCase="'two'">Second</h3>
+				<h3 *ngSwitchCase="'three'">Third</h3>
+				<h3 *ngSwitchDefault>Default</h3>
+			  </div>
+			  
+	ngFor Structural Directives
+		It changes the structure of the DOM.It's point is to repeat a given HTML template 
+		once for each value in an array, each time passing it the array value as context for string interpolation or binding.
+		Syntax:- *ngFor="let <value> of <collection>"
+			<value>= is a variable name of your choosing.
+			<collection>= is a property on your component which holds a collection, usually an array but anything that can be iterated over in a for loop.
+		Local variables:-
+			Index, First, Last, Even, Odd
+			
+		TS-File
+			Students:any[]=[
+				{
+				  'name': 'Rahul Kumar'
+				},
+				{
+				  'name': 'Sumit Kumar'
+				},
+				{
+				  'name': 'Rohan Kumar'
+				},
+				{
+				  'name': 'Rohit Kumar'
+				},
+				{
+				  'name': 'Sachin Kumar'
+				},
+				{
+				  'name': 'Muthu Kumar'
+				},
+			  ]
+		HTML-File
+			 <h2>Using ngFor</h2>
+				<ul>
+				  <li *ngFor="let student of Students; let i=index; let f=first; let l=last; let e=even; let od=odd">
+					{{i+1}} - {{student.name}} - {{f}} - {{l}} - {{e}} - {{od}}
+				  </li>
+				</ul>
+	
+	TrackBy with *ngFor
+		The use of TrackBy it's a performance optimization and is usually not needed by default,
+		it's in principle only neede if principle needed if running into performance issues.
+		Syntax;- trackByStudentID(index: number, student: any): string{
+					return student.studentID;
+					}
+		TS-File
+			  students:any[];
+			  constructor(){
+				this.students=[
+				  {
+					studentId:1,
+					name:'sumit',
+					gender:'Male',
+					age:27,
+					Course:'MCA'
+				  },
+				  {
+					studentId:2,
+					name:'sumit1',
+					gender:'Male',
+					age:27,
+					Course:'MCA'
+				  },
+				  {
+					studentId:3,
+					name:'sumit3',
+					gender:'Male',
+					age:27,
+					Course:'MCA'
+				  },
+				  {
+					studentId:4,
+					name:'sumit4',
+					gender:'Male',
+					age:27,
+					Course:'MCA'
+				  }
+				];
+			  }
+			  getmorestudents():void{
+				this.students=[
+				  {
+					studentId:1,
+					name:'sumit',
+					gender:'Male',
+					age:27,
+					Course:'MCA'
+				  },
+				  {
+					studentId:2,
+					name:'sumit1',
+					gender:'Male',
+					age:27,
+					Course:'MCA'
+				  },
+				  {
+					studentId:3,
+					name:'sumit3',
+					gender:'Male',
+					age:27,
+					Course:'MCA'
+				  },
+				  {
+					studentId:4,
+					name:'sumit4',
+					gender:'Male',
+					age:27,
+					Course:'MCA'
+				  },
+				  { studentId:5,
+					name:'sumit5',
+					gender:'Male',
+					age:27,
+					Course:'MCA'
+				  }
+				];
+			  }
+			  trackByStudentId(index:number,student:any):string{
+				return student.studentId
+			  }
+		HTML-File
+			<h2>TrackBy Example</h2>
+			<table border="1">
+			  <tr *ngFor="let s of students; let i=index; trackBy:trackByStudentId">
+				<td>{{i+1}}</td>
+				<td>{{s.studentId}}</td>
+				<td>{{s.name}}</td>
+				<td>{{s.gender}}</td>
+				<td>{{s.age}}</td>
+				<td>{{s.Course}}</td>
+			  </tr>
+			</table>
+			<br/>
+			<button (click)="getmorestudents()">Get more Students</button>
+			
+	Grouping with *ngFor
+		TS-File
+			Countrydetails:any[]=[
+			{
+			'country': 'India',
+			'people':[
+			  {
+				"name": "Ajeet Kumar"
+			  },
+			  {
+				"name": "Sumit Kumar"
+			  },
+			  {
+				"name": "Rohit Kumar"
+			  }
+			]
+			},
+			{
+			  'country': 'US',
+			  'people':[
+				{
+				  "name": "Ajeet1 Kumar"
+				},
+				{
+				  "name": "Sumit1 Kumar"
+				},
+				{
+				  "name": "Rohit1 Kumar"
+				}
+			  ]
+			  },
+		  ];
+		HTML-File
+			<h2>Grouped By *ngFor Example</h2>
+			<ul *ngFor="let group of Countrydetails">
+			  <li>{{group.country}}</li>
+			  <ul>
+				<li *ngFor="let person of group.people">{{person.name}}</li>
+			  </ul>
+			</ul>
+			
+	ngStyle
+		The ngStyle directive lets you set a given DOM elements style properties.
+		<div [ngStyle="{'color':'green'}"]></div>
+		ngStyle becomes much more useful when the value is dynamic.
+		<div [ngStyle="{'color':person.country==='US' ? 'green':'red'}"]></div>
+		TS-File
+			people:any[]=[
+			{
+			  "name":"Sumit kumar",
+			  "country":"India"
+			},
+			{
+			  "name":"Sumit1 kumar",
+			  "country":"US"
+			},
+			{
+			  "name":"Sumit2 kumar",
+			  "country":"India"
+			},{
+			  "name":"Sumit3 kumar",
+			  "country":"US"
+			},
+		  ]
+		  getcolor(country){
+			switch(country){
+			  case 'India':
+			  return 'green';
+			  case 'US':
+			  return 'blue';
+			}
+		  }
+		HTML-File
+			<h2>ngStyle Example</h2>
+			<ul *ngFor="let person of people">
+			  <li [ngStyle]="{'color':getcolor(person.country)}">{{person.name}} - {{(person.country)}}</li>
+			</ul>
+			
+	ngClass
+		ngClass directive allows us to set the CSS class dynamically for a DOM element.
+		
+		>ngClass with string
+		CSS-File
+			.one{
+				color: blue;
+			}
+			.two{
+				font-size: 30px;
+			}
+			.three{
+				color: green;
+			}
+			.four{
+				font-size: 15px;
+			}
+		TS-File
+			users=[
+				'sumit',
+				'Ajeet',
+				'rohan',
+				'sohan'
+			  ];
+		HTML-File
+			<h2>Using ngClass as string</h2>
+			<p [ngClass]="'one two'">Using ngClass as string example</p>
+			<div *ngFor="let user of users" [ngClass]="'three four'">
+			  {{user}}
+			</div>
+		>ngClass with array
+		HTML-File
+			<h2>Using ngClass as Array</h2>
+			<p [ngClass]="['one','two']">Using ngClass as string example</p>
+			<div *ngFor="let user of users" [ngClass]="'three four'">
+			  {{user}}
+			</div>
+		>ngClass with object
+			<p [ngClass]="{'one':'true','three':'false'}">Example using ngClass as Object</p>
+		>ngClass with component method
+		TS-File
+			getcssclass(flag:string){
+				let cssclass;
+				if(flag=='mode'){
+				  cssclass={
+					'one':true,
+					'two':true
+				  }
+				}else{
+				  cssclass={
+					'one':false,
+					'two':true
+				  }
+				}
+				return cssclass;
+			  }
+		HTML-File
+			<div [ngClass]="getcssclass('mode')">
+			  Example usnig ngClass with component method
+			</div>
+				
+	Data Binding
+		Data binding maens to bind the view(Html content) with Controllers(Component's) field.
+		That is whenever we display dynamic data on a view (html) from component, data binding is used.
+		Data binding basically means interacting with data.So, we can say that the interaction between templates and busineess logic is called data binding.
+		
+		Classification - Data Binding
+		1. one-way Binding
+			1.1 Component to View
+				>Interpolation binding
+				>Property binding
+				>Style binding
+				>class binding
+				>Atrribute binding
+			1.2 View to Component
+				>Event binding
+		2. Two-way Binding
+		
+		>Interpolation  binding
+			Interpolation is a technique that allows the user to bind a value to a UI element.
+			Binds the data one-way.
+			Syntax:- {{PropertyName}}
+			TS-File
+				empfirstName:string='Sumit';
+				emplastName:string='Kumar';
+				a:number = 10;
+				b:number = 20;
+			HTML-File
+				<h2>Employee Name : {{empfirstName + ' ' + emplastName}}</h2>
+				<h2> : {{a+1}}</h2>
+				<h2> : {{a+b}}</h2>
+				
+		>Property binding
+			It is used to bind values of component/model properties to the HTML element.
+			Depending on the values , it will change the existing behaviorof the HTML element.
+			Syntax:- [property]='expression'
+			
+			TS-File
+				 firstname:string='sumit';
+			HTML-File
+				  <span [innerHTML]='title'></span><br>
+				  First name: <span [innerHTML]='firstname'></span>
+				  <img [src]="'https://angular.io/assets/images/logos/angular/angular.svg'" [height]="200">
+				  
+		>Atrribute binding
+			With attribute binding, we can set the value of an attribute directly.
+			The thing tonote is that you must use the attribute binding only when there is no
+			element property there to bind.
+			Attribute binding is used to bind attribute of an element with the field of a component.
+			 TS-File
+				cols:number=3;
+				bdr:number=5;
+			 HTML-File
+				<h2>Attribute Binding</h2>
+				  <table [attr.border]="bdr" height='200'width='400'>
+					<tr>
+					  <td [attr.colspan]="cols">Students Details</td>
+					</tr>
+					<tr>
+					  <td>ID</td>
+					  <td>Name</td>
+					  <td>Class</td>
+					</tr>
+					<tr>
+						<td>001</td>
+						<td>Sumit</td>
+						<td>11th</td>
+					  </tr>
+				  </table>
+				  
+		>Event binding
+			When a usr interactswith an application in the form of a keyboard movement,
+			a mouse click, or a mouseover, it generates an event.
+			TS-File
+				 showdata(){
+					console.log("Event binding example");
+				  }
+				  show(){
+					alert("HELLO");
+				  }
+			HTML-File
+				<button (click)="showdata()">click me</button>
+				<button (click)="show()">show</button>
+				
+	Two-way Data Binding
+		The most popular and widely used data binding mechanism is two-way binding in the angular framework.
+		Basicallytwo-way binding mainly used in the input type field or any form element where user type or 
+		provide any value or change any control value in the one side, and on the other side, the same automatically 
+		updated in to the contrller variables and vice  versa.
+		==> event binding + property binding => [{ngModel}] = Two-way  Binding
+		In simple words, two-way data binding is a combination of both property binding and event binding.
+		==> <input [value]='data1' (input)='data = $event.target.value'>
+		
+		Binding using [{ngModel}] directive
+			ngModel directive which combines the square brackets of the property with the parentheses  of  event
+			binding in a single notation.
+			<input [{ngModel}]='data'>
+		
+		TS-File
+			  data:string='sumit';
+			  data1:string='Rahul';
+		HTML-File
+			  <h2>using Two-way binding Directive</h2>
+			  Enter your name: <input [value]='data' (input)='data=$event.target.value'><br/>
+			  Your name: {{data}}
+
+			  <h2>using ngModel Directive</h2>
+			  <input [(ngModel)]='data1'><br>
+			  Entered value: {{data1}}
+			  
+Pipes
+	Angular pipes can be used to transform data to desired output.
+	Pipes takes in a data input and transforms data to a different output.
+	Using the pipe operator (|), we can apply the pipe's featires to any of the property in our Angular project.
+	Pipes (|) in Angular are used to transform the data before displaying it in a browser.
+	Angular provides a lot of built in pipes to translate the data before displaying  it into the browser and as we know, Angular
+	lets us extend its feature, we can even create custom pipes in Angular.
+	Types of Pipes
+		>Built in Pipes
+		TS-File
+			employees:any[]=[
+				{
+				  code:'emp001', name:'sumit', salary: 90000, dob:'3/7/1993'
+				},
+				{
+				  code:'emp002', name:'sumit1', salary: 9000, dob:'8/9/1993'
+				},
+				{
+				  code:'emp003', name:'sumit2', salary: 50000, dob:'23/1/1993'
+				},
+				{
+				  code:'emp004', name:'sumit3', salary: 70000, dob:'30/12/1993'
+				},
+				
+			  ];
+
+		HTML-File
+			<h2>PIPES Example</h2>
+			  <table border="1">
+				<tr>
+				  <th>Emp Code</th>
+				  <th>mp Name</th>
+				  <th>Salary</th>
+				  <th>Date of Birth</th>
+				</tr>
+				<tr *ngFor="let employee  of employees">
+					<td>{{employee.code}}</td>
+					<td>{{employee.name | uppercase}}</td>
+					<td>{{employee.salary}}</td>
+					<td>{{employee.dob}}</td>
+				</tr>
+			  </table>
+			>>Parameterized pipes
+				we can pass any number of paramters to the pipe using a colon(:)
+				data | pipeName: parameter 1 : parameter 2 : parameter 3 ...: parameter name
+				Syntax:- Date- Short:- {{DOB | date:"short"}}
+						 Currency- {{salary | currency:'USD':true:'1.3-3'}}
+				TS-File
+					 dob=new Date (1986,8,2);
+					 salary:number=65000;
+				HTML-File
+					<div>
+					{{dob}} <br>
+					Medium: {{dob | date:"medium"}} <br>
+					Specific Format: {{dob | date:"dd/MM/yyyy"}} <br>
+					Medium time: {{dob | date:"mediumTime"}} <br>
+
+					Salary: {{salary| currency:"USD":true}}
+				  </div>
+			>>Chaining pipes(Multiple Pipes)
+				We can use multiple pipes with the same data at the same. This also refferd to as chaining pipes.
+				=> data | pipe1 | pipe 2 | .... | pipe n .
+				=> data | pipe 1: parameter1: parameter2 : ... : parameter n |pipe 2: parameter1: parameter2 : ... : parameter n 
+					Full date: {{dob | date:"fullDate" | uppercase}} <br>
+					
+			>>Pipes with String
+				Uppercase, Lowercase, Title, Slice<starting index>, Slice<starting index><end index>
+				TS-File
+					  name:string="Rahul";
+					  position:string="Software Engineer";
+					  work:string="Software Development";
+				HTML-File
+					  <h2>Pipes with string</h2>
+					  <h4>{{name|uppercase}} - {{position|lowercase}}</h4>
+					  <h3>{{work|titlecase}}</h3>
+					  <h4>slice Example</h4>
+					  <h3>{{work|slice:5}}</h3>
+					  <h3>{{work|slice:5:8}}</h3>
+					  
+			>> Pipes-date, percent, decimal,currency
+				>There are many date type like shortDate, longDate, fullDate.
+				>Percentage is used to display data in percentage
+				Syntax:-
+					number_expression | percent[:{minIntegerDigits}.{minFractionDigits}-{maxFractionDigits]]
+					Default Vlaue - 1, 0, 3
+				>pipes-decimal
+					
+				TS-File
+					  currentdate=new Date();
+					  mynumber:number=0.254121215559594;
+				HTML-File
+					<h2>Date pipe Example</h2>
+					  <h3>{{currentdate}}</h3>
+					  <h3>{{currentdate|date:'shortDate'}}</h3>
+					  <h3>{{currentdate|date:'longDate'}}</h3>
+					  <h3>{{currentdate|date:'fullDate'}}</h3>
+					  <h2>Percent pipe Example</h2>
+					  <h3>{{mynumber}}</h3>
+					  <h3>{{mynumber|percent}}</h3>
+					  <h3>{{mynumber|percent:'2.4-8'}}</h3>
+					  <h2>Decimal pipe Example</h2>
+					  <h3>{{mynumber}}</h3>
+					  <h3>{{mynumber|number}}</h3>
+					  <h3>{{mynumber|number:'2.4-8'}}</h3>
+					  <h2>currency pipe Example</h2>
+					  <h3>{{mynumber}}</h3>
+					  <h3>{{mynumber|currency}}</h3>
+					  <h3>{{mynumber|currency:'INR':'code'}}</h3>
+					  
+			>> JSON Pipe
+				JsonPIpe converts a value into JSON String
+				Syntax:- expression| json ,{{countries|json}}
+				TS-File
+					public employees =[
+						{
+						  "id":1, "name":"sumit1"
+						},
+						{
+						  "id":2, "name":"sumit2"
+						},
+						{
+						  "id":3, "name":"sumit3"
+						},
+						{
+						  "id":4, "name":"sumit4"
+						},
+					  ];
+				HTML-File
+					<h3>JSON pipe Example</h3>
+					  <div>
+						  {{employees}} <br>
+						{{employees|json}} <br>
+						{{employees|slice:1:3|json}}
+					  </div>
+
+		>Custom Pipes
+			TO create custom pipe apply @Pipe
+			Syntax:-
+				import {Pipe,PipeTransform} from '@angular/core';
+				@Pipe({name:'Pipename'})
+				export class Pipeclass implements PipeTransform{
+					transform(parameter):returntype{}
+				}
+			NOTE: Transform() method will decide the input types, the number of arguments, and its type
+					and output type of our custom pipe.
+					
+				To create custom pipe 
+				command : - ng g pipe mypipe --flat
+				
+			TS-File
+				import { Pipe, PipeTransform } from '@angular/core';
+
+					@Pipe({
+					  name: 'mypipe'
+					})
+					export class MypipePipe implements PipeTransform {
+
+					  transform(value: string, gender?: string): string {
+						if(gender.toLowerCase()=="male")
+						return "Mr." + value;
+						else
+						return "Mrs." + value;
+					  }
+
+					}
+
+			HTML-File
+				  <h3>Custom Pipe Example</h3>
+				  <table border="1">
+					<tr *ngFor="let employee of employees">
+					  <td>{{employee.code}}</td>
+					  <td>{{employee.name|mypipe:employee.gender}}</td>
+					  <td>{{employee.gender}}</td>
+					  <td>{{employee.salary}}</td>
+					</tr>
+				  </table>
+	
+
+Routing
+
+	Routing is mechanism used by angular for navigation between page and display appropriated
+	component/page on browser.
+	Angular framework is mainly focused and good for the SPA(Single Page Architecture).
+	It loads a single full HTML page and dynamically loads or updates the partial pages as per user request. 
+	And, that is achieved with the help of router. A set of partial page loading rule and urls is defined in router to render or load
+	partial pages based on user request.
+	> Angular Router allows us to:
+		-redirect a URL to another URL
+		-resolve data before a page is displaed
+		-run scripts when a page is activated or deactivated
+		-lazy load parts of our application
+	
+	How Angular Router Works
+		-When a user navigates to a page, Angular Router performs the following steps in order:
+			-Every time a link is clicked or the browser URL changes, router makes sure your
+			 application reacts accordingly.
+			-To accomplish that, Angular router performs the following steps in order:
+				Step 1- parse the URL
+					In step 1 of the routing process, Angular router takes the browser URL and parses it as a URL tree.
+					A URL tree is data structure that will later help Angular router identity the router state tree in step3
+					To parse the URL, Angular uses the following conventions:
+						/ - slashes divides URL segments
+						() - parentheses specify secondary routes
+						: - a colon specifies a names router outlet
+						; - a semicolon specifies a matrix parameter
+						? - a question mark separates the query string parameters
+						# - a hashing specifies the fragment
+						// - a double slash separates multiple secondary routes
+				Step 2- Redirect
+					 Before Angular router uses the URL tree to create a router atate, it checks to see if any redirects should be
+					 applied. There are two kinds of redirect:
+					 Local redirect:
+						when redirectTo does not start with a slash. replaces a single URL segments
+						Example: {path:'one',redirectTo:'two'}
+					 Absolute redirect:
+						when redirectTo starts with a slash. replaces the entire URL
+						Example: {path:'one',redirectTo:'/two'}
+					Only one redirect is applied!
+					
+				Step 3- Identify the router state
+					Angular router traverses the URL tree and matches the URL segments against the paths configured
+					in the router configuration.
+					If a URL segment matches the path of a route, the route's child routes are  matched against the 
+					remaining URL segments until all URL  segments are matched.
+					If no complete match is found, the router backtracks to find a match in the next sibling route
+				Step 4- Guard- run guards
+					At the moment, any user can navigate anywhere in the application anytime.That's not always the right thingto do.
+					Perhaps the user is not authorizd to navigate to the target component.
+					Maybe the user mustlogin (authenticate) first.
+					Maybe you should fetch some date before you display the target component.
+					You might want to save pending changes before leaving a component.
+					You might ask the user if it's OK to discard pending changes rather than save them.
+					You can add guards to the route configuration to handle these scenarios.
+				Step 5- Resolve - run resolvers
+					It resolves the required data for the router state.
+				Step 6- Activate
+					It activates the Angular components to display the page.
+				Step 7- Manage
+					Finally, when the new router state has been displayed to the screen, Angular router listens for URL changes and state changes.
+					It manages navigation and repeats the process when a new URL is requested.
+	Router Outlet
+		It is a dynamic component that the router uses to displays views based on router navigations.
+		Router outlet is a Routing component. An Angular component with a RouterOutlet that displays views based on router navigations.
+		The role of  <router-outlet> is to mark where the router displays a view. (This is the location where Angular will insert the component we want to route to on the view).
+		The <router-outlet> tells the router where to display routed views.
+		The <router-outlet> is one of the router directives that became available to the AppComponent because AppModule imports AppRoutingModule which exported RouterModule.
+		
+		<nav [ngClass]="menu">
+			<a routerLink="/home" routerLinkActive="active-link">Home</a>
+			<a routerLink="/add-book" routerLinkActive="active-link">Add Book</a>
+			<a routerLink="/manage-book" routerLinkActive="active-link">Manage Book</a>
+		</nav>
+		<router-outlet></router-outlet>
+	Router Link
+		With the help of the routerLink directive, we can linktorouts of our application right from the html template.
+		Just add the directive to an HTML element. When the user clicks on that element, angular navigates  to the specified location.
+		The routerLinkis the selector for the RouterLinkdirctivethat turns user clicks into  router navigations.youcan assigna  string to the routreLink.
+		This directive generates our link based on the routepath.
+		Syntax:-
+			template:
+				<h1>Angular Router</h1>
+				<div>
+				<a [routerLink]="['/student']">Students</a>
+				</div>
+				<router-outlet></router-outlet>
+				
+	Router Link - Server-Side
+		For your application to work with server-side rendering, the element hosting the directive  has to be a link <a> element.
+		It is also possible, to navigate to a route from code.To do so, we need to the angular router.
+		
+		import {Router} from '@angular/router';
+		constructor(private router: Router){}
+		
+		Once we have  that router, navigation is quite simple. Just call the navigate function of Router.
+		This function takes an array. The first  entity of the array defines the string of the route, we want to navigate to. 
+		The second is optional and allows us to pass in a route parameter.
+		
+		this.router.navigate(['/student',78748]);
+		
+		Use the CLI to generate it.
+			ng generate module app-routing --flat --module=app
+				--flat puts the file in src/app instead of its own folder.
+				--module=app tells the CLI to registerit in the imports array of the AppModule.
+			
+		
+		
+		
+		
+		
+		
+		
+	
+	
+	
